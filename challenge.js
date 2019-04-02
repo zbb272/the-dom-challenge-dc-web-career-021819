@@ -12,7 +12,12 @@ function init(){
   setInterval(counterTimerCallback, 1000);
 
   function counterTimerCallback(){
-    counter.innerHTML = parseInt(counter.innerHTML) + 1;
+    if(pause){
+      return 0;
+    }
+    else{
+      counter.innerHTML = parseInt(counter.innerHTML) + 1;
+    }
   }
 
   //minus button----------------------------------
@@ -41,6 +46,9 @@ function init(){
     }
   }
 
+  //like tracker
+  let likesObject = {}
+
   //like button----------------------------------
   const likeButton = document.getElementById("<3");
   likeButton.addEventListener('click', likeButtonClickHandler);
@@ -50,8 +58,17 @@ function init(){
       return event;
     }
     else{
+      if (likesObject[counter.innerHTML]){
+        likesObject[counter.innerHTML] = parseInt(likesObject[counter.innerHTML]) + 1;
+      }
+      else {
+        likesObject[counter.innerHTML] = 1;
+      }
+
       let element = document.createElement('li');
-      element.innerHTML = `liked ${counter.innerHTML}`;
+      element.innerHTML = `${counter.innerHTML} has been liked ${likesObject[counter.innerHTML]} times`;
+      console.log(likesObject)
+      // element.innerHTML = `liked ${counter.innerHTML}`;
       likes.appendChild(element);
     }
   }
@@ -89,7 +106,12 @@ function init(){
       return event;
     }
     else {
-      comments.innerHTML = comments.innerHTML + "<br>" + inputField.value;
+      if(comments.innerHTML === ""){
+        comments.innerHTML = inputField.value +  "<br>";
+      }
+      else {
+        comments.innerHTML = comments.innerHTML + "<br>" + inputField.value;
+      }
       inputField.value = "";
     }
   }
